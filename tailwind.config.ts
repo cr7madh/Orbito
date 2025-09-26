@@ -62,6 +62,10 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Custom colors for Orbito
+        orbitoCardBg: "#18191a",
+        orbitoInputBg: "#232324",
+        orbitoError: "#FF5733",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -85,10 +89,22 @@ export default {
             height: "0",
           },
         },
+        // Keyframes for gradient shift on button hover
+        "gradient-shift": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "100%": { backgroundPosition: "100% 50%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "gradient-shift": "gradient-shift 0.8s ease-in-out infinite alternate",
+      },
+      backgroundImage: {
+        "orbito-gradient": "linear-gradient(90deg, #FFC300, #FF5733, #FF0080)",
+      },
+      boxShadow: {
+        "orbito-card": "0 1px 19px rgba(0,0,0,0.21)",
       },
     },
   },
