@@ -18,7 +18,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
       <div className="relative md:w-1/2 flex flex-col items-center justify-center p-8 text-center bg-black">
         <h1
           className={cn(
-            "text-6xl md:text-8xl font-extrabold mb-4",
+            "text-5xl md:text-7xl font-extrabold mb-4 font-roboto", // Adjusted font size and added font-roboto
             "bg-orbito-gradient bg-clip-text text-transparent",
             "animate-gradient-shift bg-[length:200%_auto]"
           )}

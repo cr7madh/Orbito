@@ -145,7 +145,15 @@ const Login: React.FC = () => {
               </p>
             )}
           </div>
-          <p className="text-right text-sm">
+          <div className="space-y-3 mt-6"> {/* Added space-y-3 for button spacing */}
+            <AuthButton type="button" onClick={() => navigate("/signup")} className="w-full">
+              Sign Up
+            </AuthButton>
+            <AuthButton type="submit" className="w-full">
+              Log In
+            </AuthButton>
+          </div>
+          <p className="text-center text-sm text-gray-400 mt-4">
             <button
               type="button"
               onClick={() => {
@@ -157,15 +165,6 @@ const Login: React.FC = () => {
             >
               Forgotten password?
             </button>
-          </p>
-          <AuthButton type="submit" className="w-full">
-            Login
-          </AuthButton>
-          <p className="text-center text-sm text-gray-400 mt-4">
-            Don't have an account?{" "}
-            <Link to="/signup" className="text-orbitoError hover:underline">
-              Create new account
-            </Link>
           </p>
         </form>
       )}
