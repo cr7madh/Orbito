@@ -109,7 +109,7 @@ const App = () => (
           <Route path="/" element={<AuthRedirect><Login /></AuthRedirect>} /> {/* Default route to login */}
           <Route path="/login" element={<AuthRedirect><Login /></AuthRedirect>} />
           <Route path="/signup" element={<AuthRedirect><Signup /></AuthRedirect>} />
-          <Route path="/reset-password" element={<AuthRedirect><ResetPassword /></AuthRedirect>} />
+          <Route path="/reset-password" element={<ResetPassword />} /> {/* Removed AuthRedirect */}
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
