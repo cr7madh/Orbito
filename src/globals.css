@@ -99,3 +99,14 @@
     @apply bg-black text-foreground; /* Changed to bg-black */
   }
 }
+
+.bg-orbito-reset-gradient {
+  background: radial-gradient(
+    circle at bottom right,
+    rgba(255, 215, 0, 0.3) 0%, /* Gold, slightly transparent */
+    rgba(255, 140, 0, 0.2) 30%, /* Dark Orange, slightly transparent */
+    rgba(26, 26, 26, 0.8) 70%, /* Dark grey, more opaque */
+    rgba(0, 0, 0, 1) 100% /* Black, fully opaque */
+  );
+  background-color: #0a0a0a; /* Base dark color */
+}

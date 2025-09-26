@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { supabase } from "@/lib/supabaseClient";
-import AuthLayout from "@/components/AuthLayout";
 import { AuthInput } from "@/components/ui/auth-input";
 import { AuthLabel } from "@/components/ui/auth-label";
 import { AuthButton } from "@/components/ui/auth-button";
@@ -78,47 +77,49 @@ const ResetPassword: React.FC = () => {
   }
 
   return (
-    <AuthLayout>
-      <h2 className="text-3xl font-bold text-center mb-6 text-white">
-        Set New Password
-      </h2>
+    <div className="min-h-screen flex items-center justify-center bg-orbito-reset-gradient text-white p-4">
+      <div className="w-full max-w-md bg-orbitoCardBg rounded-lg shadow-orbito-card p-6 md:p-8">
+        <h2 className="text-3xl font-bold text-center mb-6 text-white">
+          Set New Password
+        </h2>
 
-      {message && <AuthMessage message={message.text} type={message.type} />}
+        {message && <AuthMessage message={message.text} type={message.type} />}
 
-      <form onSubmit={handleSubmit(handlePasswordReset)} className="space-y-4">
-        <div>
-          <AuthLabel htmlFor="password">New Password</AuthLabel>
-          <AuthInput
-            id="password"
-            type="password"
-            placeholder="••••••••"
-            {...register("password")}
-          />
-          {errors.password && (
-            <p className="text-orbitoError text-sm mt-1">
-              {errors.password.message}
-            </p>
-          )}
-        </div>
-        <div>
-          <AuthLabel htmlFor="confirmPassword">Confirm New Password</AuthLabel>
-          <AuthInput
-            id="confirmPassword"
-            type="password"
-            placeholder="••••••••"
-            {...register("confirmPassword")}
-          />
-          {errors.confirmPassword && (
-            <p className="text-orbitoError text-sm mt-1">
-              {errors.confirmPassword.message}
-            </p>
-          )}
-        </div>
-        <AuthButton type="submit" className="w-full">
-          Update Password
-        </AuthButton>
-      </form>
-    </AuthLayout>
+        <form onSubmit={handleSubmit(handlePasswordReset)} className="space-y-4">
+          <div>
+            <AuthLabel htmlFor="password">New Password</AuthLabel>
+            <AuthInput
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              {...register("password")}
+            />
+            {errors.password && (
+              <p className="text-orbitoError text-sm mt-1">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <AuthLabel htmlFor="confirmPassword">Confirm New Password</AuthLabel>
+            <AuthInput
+              id="confirmPassword"
+              type="password"
+              placeholder="••••••••"
+              {...register("confirmPassword")}
+            />
+            {errors.confirmPassword && (
+              <p className="text-orbitoError text-sm mt-1">
+                {errors.confirmPassword.message}
+              </p>
+            )}
+          </div>
+          <AuthButton type="submit" className="w-full">
+            Update Password
+          </AuthButton>
+        </form>
+      </div>
+    </div>
   );
 };
 
