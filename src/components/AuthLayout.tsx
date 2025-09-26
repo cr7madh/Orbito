@@ -12,20 +12,29 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
   title = "Orbito",
   tagline = "Connect and Share with the people you know by Orbito",
 }) => {
+  // Split the tagline into two parts for a more balanced look
+  const taglineParts = tagline.split(" ");
+  const midPoint = Math.ceil(taglineParts.length / 2);
+  const firstParagraph = taglineParts.slice(0, midPoint).join(" ");
+  const secondParagraph = taglineParts.slice(midPoint).join(" ");
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-black text-white">
       {/* Left side: Brand */}
       <div className="relative md:w-1/2 flex flex-col items-center justify-center p-8 text-center bg-black">
         <h1
           className={cn(
-            "text-5xl md:text-7xl font-extrabold mb-4 font-roboto", // Reverted font size and weight
+            "text-6xl md:text-8xl font-black mb-4 font-roboto", // Increased font size and changed to font-black
             "bg-orbito-gradient bg-clip-text text-transparent",
             "animate-gradient-shift bg-[length:200%_auto]"
           )}
         >
           {title}
         </h1>
-        <p className="text-xl md:text-2xl max-w-md">{tagline}</p> {/* Reverted tagline to a single paragraph */}
+        <div className="max-w-md"> {/* Container for the two paragraphs */}
+          <p className="text-xl md:text-2xl mb-2">{firstParagraph}</p> {/* Added mb-2 for spacing */}
+          <p className="text-xl md:text-2xl">{secondParagraph}</p>
+        </div>
       </div>
 
       {/* Right side: Form Card */}
