@@ -1,105 +1,82 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import AuthLayout from "@/components/AuthLayout";
-import { AuthInput } from "@/components/ui/auth-input";
-import { AuthLabel } from "@/components/ui/auth-label";
-import { AuthButton } from "@/components/ui/auth-button";
-import AuthMessage from "@/components/AuthMessage";
-
-const signupSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-type SignupFormInputs = z.infer<typeof signupSchema>;
+import { toast } from "sonner";
 
 const Signup: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignupFormInputs>({
-    resolver: zodResolver(signupSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-
-  const handleSignup = async (data: SignupFormInputs) => {
-    setMessage(null);
-    const { error } = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
-      options: {
-        emailRedirectTo: window.location.origin + "/home", // Redirect to home after email confirmation
-      },
-    });
-
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    const { error } = await supabase.auth.signUp({ email, password });
     if (error) {
-      setMessage({ text: error.message, type: "error" });
+      toast.error(error.message);
     } else {
-      setMessage({
-        text: "Account created! Check your email for a confirmation link.",
-        type: "success",
-      });
-      // Optionally redirect to a "check email" page or login after signup
-      // navigate("/login");
+      toast.success("Sign up successful! Please check your email to confirm your account.");
+      navigate("/login"); // Redirect to login after successful signup
     }
+    setLoading(false);
   };
 
   return (
     <AuthLayout>
-      <h2 className="text-3xl font-bold text-center mb-6 text-white">
-        Create Your Orbito Account
-      </h2>
-
-      {message && <AuthMessage message={message.text} type={message.type} />}
-
-      <form onSubmit={handleSubmit(handleSignup)} className="space-y-4">
+      <form onSubmit={handleSignup} className="space-y-6">
         <div>
-          <AuthLabel htmlFor="email">Email</AuthLabel>
-          <AuthInput
+          <Label htmlFor="email" className="text-white">Email address</Label>
+          <Input
             id="email"
             type="email"
-            placeholder="your@example.com"
-            {...register("email")}
+            placeholder="Your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="mt-1 bg-orbitoInputBg text-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
           />
-          {errors.email && (
-            <p className="text-orbitoError text-sm mt-1">
-              {errors.email.message}
-            </p>
-          )}
         </div>
         <div>
-          <AuthLabel htmlFor="password">Password</AuthLabel>
-          <AuthInput
+          <Label htmlFor="password" className="text-white">Password</Label>
+          <Input
             id="password"
             type="password"
-            placeholder="••••••••"
-            {...register("password")}
+            placeholder="Your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="mt-1 bg-orbitoInputBg text-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
           />
-          {errors.password && (
-            <p className="text-orbitoError text-sm mt-1">
-              {errors.password.message}
-            </p>
-          )}
         </div>
-        <div className="space-y-3 mt-6"> {/* Added space-y-3 for button spacing */}
-          <AuthButton type="submit" className="w-full">
-            Sign Up
-          </AuthButton>
-          <AuthButton type="button" onClick={() => navigate("/login")} className="w-full">
-            Log In
-          </AuthButton>
+        {/* Primary Sign Up Button */}
+        <Button
+          type="submit"
+          className="w-full bg-gradient-to-r from-orbitoGradientStart to-orbitoGradientEnd text-white font-bold py-2 px-4 rounded-md hover:opacity-90 transition-opacity"
+          disabled={loading}
+        >
+          {loading ? "Signing Up..." : "Sign Up"}
+        </Button>
+
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-orbitoCardBg px-2 text-gray-400">
+            Or
+          </span>
         </div>
+
+        {/* Secondary Login Button */}
+        <Button
+          type="button"
+          onClick={() => navigate("/login")}
+          className="w-full bg-gradient-to-r from-orbitoGradientStart to-orbitoGradientEnd text-white font-bold py-2 px-4 rounded-md hover:opacity-90 transition-opacity"
+          disabled={loading}
+        >
+          Log In
+        </Button>
       </form>
     </AuthLayout>
   );

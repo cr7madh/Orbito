@@ -1,125 +1,112 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { supabase } from "@/lib/supabaseClient";
-import { AuthInput } from "@/components/ui/auth-input";
-import { AuthLabel } from "@/components/ui/auth-label";
-import { AuthButton } from "@/components/ui/auth-button";
-import AuthMessage from "@/components/AuthMessage";
-
-const resetPasswordSchema = z
-  .object({
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string().min(6, "Please confirm your password"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
-
-type ResetPasswordFormInputs = z.infer<typeof resetPasswordSchema>;
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import AuthLayout from "@/components/AuthLayout";
+import { toast } from "sonner";
 
 const ResetPassword: React.FC = () => {
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [session, setSession] = useState<any>(null);
   const navigate = useNavigate();
-  const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ResetPasswordFormInputs>({
-    resolver: zodResolver(resetPasswordSchema),
-    defaultValues: {
-      password: "",
-      confirmPassword: "",
-    },
-  });
 
   useEffect(() => {
-    // Supabase automatically handles session from URL hash for password reset
-    // We just need to ensure the user is logged in to update their password
-    const checkSession = async () => {
+    const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
+      setSession(session);
       if (!session) {
-        setMessage({ text: "Invalid or expired reset link. Please try again.", type: "error" });
-        navigate("/login"); // Redirect if no session is found
+        toast.error("Invalid or expired password reset link. Please request a new one.");
+        navigate("/login");
       }
-      setLoading(false);
     };
-    checkSession();
+    getSession();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+        if (!session) {
+          toast.error("Invalid or expired password reset link. Please request a new one.");
+          navigate("/login");
+        }
+      }
+    );
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, [navigate]);
 
-  const handlePasswordReset = async (data: ResetPasswordFormInputs) => {
-    setMessage(null);
-    const { error } = await supabase.auth.updateUser({
-      password: data.password,
-    });
-
-    if (error) {
-      setMessage({ text: error.message, type: "error" });
-    } else {
-      setMessage({ text: "Your password has been updated successfully!", type: "success" });
-      setTimeout(() => {
-        navigate("/home");
-      }, 2000);
+  const handlePasswordReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
     }
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Your password has been updated successfully!");
+      navigate("/login");
+    }
+    setLoading(false);
   };
 
-  if (loading) {
+  if (!session) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black text-white">
-        <p>Loading...</p>
+        <p>Checking reset link...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-orbito-reset-gradient text-white p-4">
-      <div className="w-full max-w-md bg-orbitoCardBg rounded-lg shadow-orbito-card p-6 md:p-8">
-        <h2 className="text-3xl font-bold text-center mb-6 text-white">
-          Set New Password
-        </h2>
-
-        {message && <AuthMessage message={message.text} type={message.type} />}
-
-        <form onSubmit={handleSubmit(handlePasswordReset)} className="space-y-4">
-          <div>
-            <AuthLabel htmlFor="password">New Password</AuthLabel>
-            <AuthInput
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              {...register("password")}
-            />
-            {errors.password && (
-              <p className="text-orbitoError text-sm mt-1">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
-          <div>
-            <AuthLabel htmlFor="confirmPassword">Confirm New Password</AuthLabel>
-            <AuthInput
-              id="confirmPassword"
-              type="password"
-              placeholder="••••••••"
-              {...register("confirmPassword")}
-            />
-            {errors.confirmPassword && (
-              <p className="text-orbitoError text-sm mt-1">
-                {errors.confirmPassword.message}
-              </p>
-            )}
-          </div>
-          <AuthButton type="submit" className="w-full">
-            Update Password
-          </AuthButton>
-        </form>
-      </div>
-    </div>
+    <AuthLayout>
+      <form onSubmit={handlePasswordReset} className="space-y-6">
+        <h2 className="text-2xl font-bold text-white text-center mb-6">Set New Password</h2>
+        <div>
+          <Label htmlFor="password" className="text-white">New Password</Label>
+          <Input
+            id="password"
+            type="password"
+            placeholder="Enter your new password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="mt-1 bg-orbitoInputBg text-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          />
+        </div>
+        <div>
+          <Label htmlFor="confirmPassword" className="text-white">Confirm New Password</Label>
+          <Input
+            id="confirmPassword"
+            type="password"
+            placeholder="Confirm your new password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            className="mt-1 bg-orbitoInputBg text-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          />
+        </div>
+        <Button
+          type="submit"
+          className="w-full bg-gradient-to-r from-orbitoGradientStart to-orbitoGradientEnd text-white font-bold py-2 px-4 rounded-md hover:opacity-90 transition-opacity"
+          disabled={loading}
+        >
+          {loading ? "Updating Password..." : "Reset Password"}
+        </Button>
+      </form>
+    </AuthLayout>
   );
 };
 
