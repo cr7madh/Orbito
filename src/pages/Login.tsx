@@ -28,8 +28,10 @@ const Login: React.FC = () => {
 
   const handleForgotPassword = async () => {
     setLoading(true);
+    const redirectUrl = `${window.location.origin}/reset-password`;
+    console.log("Attempting to send password reset email with redirect to:", redirectUrl); // Added console log
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`, // This line correctly uses the current origin
+      redirectTo: redirectUrl,
     });
     if (error) {
       toast.error(error.message);
