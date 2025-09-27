@@ -29,7 +29,7 @@ const Login: React.FC = () => {
   const handleForgotPassword = async () => {
     setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: `${window.location.origin}/reset-password`, // This line correctly uses the current origin
     });
     if (error) {
       toast.error(error.message);
@@ -65,7 +65,7 @@ const Login: React.FC = () => {
             required
             className="mt-1 bg-orbitoInputBg text-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
           />
-          <div className="text-center mt-2"> {/* Changed to text-center */}
+          <div className="text-center mt-2">
             <a
               onClick={handleForgotPassword}
               className="inline-block text-sm text-gray-400 transition-all duration-300 cursor-pointer group"
