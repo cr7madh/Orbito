@@ -13,7 +13,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
           Orbito
         </h1>
         <p className="text-2xl text-white max-w-lg">
-          Connect and Share with the people you know <br /> by <span className="font-bold">Orbito</span>
+          Connect and Share with The <br /> people you know by <span className="font-bold">Orbito</span>
         </p>
       </div>
 
