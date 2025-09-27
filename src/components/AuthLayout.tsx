@@ -12,7 +12,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
         <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-orbitoLogoGradientStart to-orbitoLogoGradientEnd text-transparent bg-clip-text">
           Orbito
         </h1>
-        <p className="text-2xl text-white max-w-md">
+        <p className="text-2xl text-white max-w-lg">
           Connect and Share with the people you know <br /> by <span className="font-bold">Orbito</span>
         </p>
       </div>
