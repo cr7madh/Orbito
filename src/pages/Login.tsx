@@ -65,6 +65,16 @@ const Login: React.FC = () => {
             required
             className="mt-1 bg-orbitoInputBg text-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
           />
+          <div className="text-right mt-2">
+            <a
+              onClick={handleForgotPassword}
+              className="inline-block text-sm text-gray-400 transition-all duration-300 cursor-pointer group"
+            >
+              <span className="inline-block group-hover:scale-105 group-hover:bg-gradient-to-r group-hover:from-orbitoGradientStart group-hover:to-orbitoGradientEnd group-hover:text-transparent group-hover:bg-clip-text transition-all duration-300">
+                Forgot password?
+              </span>
+            </a>
+          </div>
         </div>
         {/* Primary Login Button */}
         <Button
