@@ -27,10 +27,6 @@ const Login: React.FC = () => {
   };
 
   const handleForgotPassword = async () => {
-    if (!email) {
-      toast.error("Please enter your email address to reset your password.");
-      return;
-    }
     setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`,
@@ -69,14 +65,6 @@ const Login: React.FC = () => {
             required
             className="mt-1 bg-orbitoInputBg text-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
           />
-          <button
-            type="button"
-            onClick={handleForgotPassword}
-            className="text-sm text-gray-400 hover:text-orbitoGradientStart hover:scale-105 transition-all duration-300 mt-2 block text-right"
-            disabled={loading}
-          >
-            Forgot password?
-          </button>
         </div>
         {/* Primary Login Button */}
         <Button
