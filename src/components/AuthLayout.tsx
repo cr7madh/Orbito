@@ -13,13 +13,13 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
           Orbito
         </h1>
         <p className="text-2xl text-white max-w-md">
-          Connect and Share with the people you know by <span className="font-bold">Orbito</span>
+          Connect and Share with the people you know by <br /><span className="font-bold">Orbito</span>
         </p>
       </div>
 
       {/* Right Section: Auth Form */}
       <div className="md:w-1/2 flex items-center justify-center p-4 md:p-8">
-        <div className="w-full max-w-md bg-orbitoCardBg rounded-lg shadow-lg p-6 md:p-8">
+        <div className="w-full max-w-md bg-orbitoCardBg rounded-lg shadow-orbito-card p-6 md:p-8">
           {children}
         </div>
       </div>

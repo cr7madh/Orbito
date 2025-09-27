@@ -75,19 +75,9 @@ const Login: React.FC = () => {
           {loading ? "Logging In..." : "Log In"}
         </Button>
 
-        <div className="text-center text-gray-400 text-sm">
-          <button
-            type="button"
-            onClick={handleForgotPassword}
-            className="text-gray-400 hover:text-white transition-colors"
-            disabled={loading}
-          >
-            Forgot password?
-          </button>
-        </div>
-
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-orbitoCardBg px-2 text-gray-400">
+        <div className="relative flex justify-center items-center my-4">
+          <div className="absolute w-full border-t border-gray-700"></div>
+          <span className="relative z-10 bg-orbitoCardBg px-2 text-gray-400 text-xs uppercase">
             Or
           </span>
         </div>

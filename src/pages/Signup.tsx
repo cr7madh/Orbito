@@ -62,8 +62,9 @@ const Signup: React.FC = () => {
           {loading ? "Signing Up..." : "Sign Up"}
         </Button>
 
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-orbitoCardBg px-2 text-gray-400">
+        <div className="relative flex justify-center items-center my-4">
+          <div className="absolute w-full border-t border-gray-700"></div>
+          <span className="relative z-10 bg-orbitoCardBg px-2 text-gray-400 text-xs uppercase">
             Or
           </span>
         </div>
