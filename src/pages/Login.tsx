@@ -65,7 +65,7 @@ const Login: React.FC = () => {
             required
             className="mt-1 bg-orbitoInputBg text-white border-none focus-visible:ring-0 focus-visible:ring-offset-0"
           />
-          <div className="text-right mt-2">
+          <div className="text-center mt-2"> {/* Changed to text-center */}
             <a
               onClick={handleForgotPassword}
               className="inline-block text-sm text-gray-400 transition-all duration-300 cursor-pointer group"
@@ -79,7 +79,9 @@ const Login: React.FC = () => {
         {/* Primary Login Button */}
         <Button
           type="submit"
-          className="w-full bg-gradient-to-r from-orbitoGradientStart to-orbitoGradientEnd text-white font-bold py-2 px-4 rounded-md hover:opacity-90 transition-opacity"
+          className="w-full bg-gradient-to-r from-orbitoGradientStart to-orbitoGradientEnd text-white font-bold py-2 px-4 rounded-md
+                     bg-[size:200%_auto] bg-[position:0%_50%] hover:bg-[position:100%_50%]
+                     hover:scale-105 transition-all duration-500 ease-in-out"
           disabled={loading}
         >
           {loading ? "Logging In..." : "Log In"}
@@ -96,7 +98,9 @@ const Login: React.FC = () => {
         <Button
           type="button"
           onClick={() => navigate("/signup")}
-          className="w-full bg-gradient-to-r from-orbitoGradientStart to-orbitoGradientEnd text-white font-bold py-2 px-4 rounded-md hover:opacity-90 transition-opacity"
+          className="w-full bg-gradient-to-r from-orbitoGradientStart to-orbitoGradientEnd text-white font-bold py-2 px-4 rounded-md
+                     bg-[size:200%_auto] bg-[position:0%_50%] hover:bg-[position:100%_50%]
+                     hover:scale-105 transition-all duration-500 ease-in-out"
           disabled={loading}
         >
           Sign Up

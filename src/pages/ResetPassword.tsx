@@ -100,7 +100,9 @@ const ResetPassword: React.FC = () => {
         </div>
         <Button
           type="submit"
-          className="w-full bg-gradient-to-r from-orbitoGradientStart to-orbitoGradientEnd text-white font-bold py-2 px-4 rounded-md hover:opacity-90 transition-opacity"
+          className="w-full bg-gradient-to-r from-orbitoGradientStart to-orbitoGradientEnd text-white font-bold py-2 px-4 rounded-md
+                     bg-[size:200%_auto] bg-[position:0%_50%] hover:bg-[position:100%_50%]
+                     hover:scale-105 transition-all duration-500 ease-in-out"
           disabled={loading}
         >
           {loading ? "Updating Password..." : "Reset Password"}
